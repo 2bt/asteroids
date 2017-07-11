@@ -5,29 +5,19 @@
 #include "bullet.hpp"
 
 
-Asteroid::Asteroid(const Asteroid* parent) {
-    if (parent) {
-        m_pos = parent->m_pos;
-        m_size = parent->m_size - 1;
-    }
-    else {
-        m_pos.x = random_float(0, WIDTH);
-        m_pos.y = random_float(0, HEIGHT);
-        m_size = 3;
-    }
+Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
+    m_pos    = pos;
+    m_size   = size;
     m_health = m_size;
-    m_vang = random_float(-1, 1) * 0.01;
-    m_ang = random_float(0, 2 * ALLEGRO_PI);
-    float speed = random_float(0.25, 0.5);
-    float r = m_health * 10;
-    if (parent) {
-        speed *= 4 - m_size;
-        m_vang *= 4 - m_size;
-        m_pos.x += std::sin(m_ang) * r * 0.3;
-        m_pos.y += std::cos(m_ang) * r * 0.3;
-    }
-    m_vel.x = std::sin(m_ang) * speed;
-    m_vel.y = std::cos(m_ang) * speed;
+    m_ang    = random_float(0, 2 * ALLEGRO_PI);
+    m_vang   = random_float(-1, 1) * 0.01 * (4 - m_size);
+
+    if (dir) m_vel = *dir;
+    else     m_vel = { std::sin(m_ang), std::cos(m_ang) };
+
+    float r  = m_health * 10;
+    m_pos   += m_vel * r * 0.3f;
+    m_vel   *= random_float(0.25, 0.5) * (4 - m_size);
 
     // unique mesh
     m_vertices.emplace_back();
@@ -57,9 +47,11 @@ void Asteroid::collision(Entity& other) {
             die();
             world.spawn_explosion(m_pos, m_radius);
             if (m_size > 1) {
-                world.spawn(std::make_unique<Asteroid>(this));
-                world.spawn(std::make_unique<Asteroid>(this));
-                world.spawn(std::make_unique<Asteroid>(this));
+                Entity& a1 = world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1));
+                Entity& a2 = world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1));
+
+                glm::vec2 dir = -glm::normalize(a1.vel() + a2.vel());
+                world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1, &dir));
             }
         }
     }
@@ -75,7 +67,7 @@ void Asteroid::update() {
 
 
 void Asteroid::draw(const ALLEGRO_TRANSFORM& transform) {
-    int c = std::min(255, 170 + m_hit_delay * 20);
+    int c = std::min(255, 170 + m_hit_delay * 15);
     al_use_transform(&transform);
     al_draw_polygon((float*) &m_transformed_vertices[1], m_triangles.size(),
                     ALLEGRO_LINE_JOIN_ROUND, al_map_rgb(c, c, c), 1, 0);

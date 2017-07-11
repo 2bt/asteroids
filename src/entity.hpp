@@ -45,6 +45,7 @@ public:
 
     bool is_alive() const { return m_is_alive; }
     const glm::vec2& pos() const { return m_pos; }
+    const glm::vec2& vel() const { return m_vel; }
     float radius() const { return m_radius; }
 
     void die() { m_is_alive = false; }

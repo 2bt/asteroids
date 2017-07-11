@@ -12,8 +12,7 @@ public:
     void draw();
 
 
-    void spawn(Entity::Ptr&& e);
-
+    Entity& spawn(Entity::Ptr&& e);
     void spawn_explosion(const glm::vec2& pos, float r);
 
 

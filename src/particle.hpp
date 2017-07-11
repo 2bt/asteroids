@@ -25,5 +25,5 @@ public:
     }
 
 private:
-    int   m_ttl;
+    int m_ttl;
 };

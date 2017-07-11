@@ -65,8 +65,10 @@ void Ship::update() {
 
 
 void Ship::collision(Entity& other) {
-//    if (Asteroid* a = dynamic_cast<Asteroid*>(&other)) {
-//    }
+    if (Asteroid* a = dynamic_cast<Asteroid*>(&other)) {
+        die();
+        world.spawn_explosion(m_pos, 20);
+    }
 }
 
 

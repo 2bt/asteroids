@@ -13,18 +13,25 @@ void World::init() {
     m_entities.clear();
 
     spawn(std::make_unique<Ship>());
-    for (int i = 0; i < 5; ++i) spawn( std::make_unique<Asteroid>());
+    for (int i = 0; i < 5; ++i) {
+        glm::vec2 pos = {
+            random_float(0, WIDTH),
+            random_float(0, HEIGHT)
+        };
+        spawn( std::make_unique<Asteroid>(pos, 3));
+    }
 }
 
 
-void World::spawn(Entity::Ptr&& e) {
+Entity& World::spawn(Entity::Ptr&& e) {
     e->update_transformed_vertices();
     m_new_entities.emplace_back(std::move(e));
+    return *m_new_entities.back();
 }
 
 
 void World::spawn_explosion(const glm::vec2& pos, float r) {
-    for (int i = 0; i < r; ++i) {
+    for (int i = 0; i < r * r / 20; ++i) {
         float ang = random_float(0, 2 * ALLEGRO_PI);
         float speed = random_float(0, 1.5);
         glm::vec2 vel = glm::vec2(std::sin(ang), std::cos(ang)) * speed;
@@ -47,9 +54,11 @@ void World::update() {
 
 
     for (int i = 0; i < (int) m_entities.size() - 1; ++i) {
+        Entity& e1 = *m_entities[i];
         for (int j = i + 1; j < (int) m_entities.size(); ++j) {
-            Entity& e1 = *m_entities[i];
             Entity& e2 = *m_entities[j];
+            if (!e1.is_alive()) break;
+            if (!e2.is_alive()) continue;
             if (e1.check_collision(e2)) {
                 e1.collision(e2);
                 e2.collision(e1);

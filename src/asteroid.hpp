@@ -7,7 +7,7 @@
 class Asteroid : public Entity {
 public:
 
-    Asteroid(const Asteroid* parent = nullptr);
+    Asteroid(const glm::vec2& pos, int size = 3, const glm::vec2* dir = nullptr);
     void update() override;
     void collision(Entity& other) override;
     void draw(const ALLEGRO_TRANSFORM& transform) override;
