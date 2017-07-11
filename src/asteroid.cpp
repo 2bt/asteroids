@@ -25,12 +25,9 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
     for (int j = 0; j < N; ++j) {
         float r2 = random_float(0.7, 1.3) * r;
         float ang = (j + random_float(0, 0.9)) / N * 2 * ALLEGRO_PI;
-        glm::vec2 v;
-        v.x = std::sin(ang) * r2;
-        v.y = std::cos(ang) * r2;
-
         m_radius = std::max(m_radius, r2);
-        m_vertices.emplace_back(v.x, v.y);
+        glm::vec2 v = { std::sin(ang), std::cos(ang) };
+        m_vertices.emplace_back(v * r2);
         m_triangles.emplace_back(0, j, (j + 1) % N);
     }
 

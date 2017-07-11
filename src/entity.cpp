@@ -57,9 +57,14 @@ bool Entity::check_collision(const Entity& other) const {
     if (m_collision_category & other.m_collision_mask &&
         other.m_collision_category & m_collision_mask)
     {
-        int sy = (other.m_pos.y > HEIGHT / 2) - (m_pos.y > HEIGHT / 2);
-        int sx = (other.m_pos.x > WIDTH / 2)  - (m_pos.x > WIDTH / 2);
-        if (check_collision(other, glm::vec2(sx * WIDTH, sy * HEIGHT))) return true;
+        glm::vec2 dif = other.m_pos - m_pos;
+        glm::vec2 offset = {};
+        if (dif.x >  WIDTH)  offset.x = -WIDTH;
+        if (dif.x < -WIDTH)  offset.x =  WIDTH;
+        if (dif.y >  HEIGHT) offset.y = -HEIGHT;
+        if (dif.y < -HEIGHT) offset.y =  HEIGHT;
+
+        return check_collision(other, offset);
     }
     return false;
 }

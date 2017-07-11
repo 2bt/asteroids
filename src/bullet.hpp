@@ -7,7 +7,6 @@
 class Bullet : public Entity {
 public:
     Bullet(const glm::vec2& pos, float ang) {
-        m_ttl = 50;
         m_ang = ang;
         m_vel.x = -std::sin(m_ang) * 5;
         m_vel.y =  std::cos(m_ang) * 5;
@@ -45,5 +44,5 @@ public:
     }
 
 private:
-    int   m_ttl;
+    int m_ttl = 50;
 };
