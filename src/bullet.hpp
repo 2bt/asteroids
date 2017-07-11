@@ -26,6 +26,10 @@ public:
         warp_pos();
     }
 
+    void collision(Entity& other) override {
+        die();
+    }
+
     void draw(const ALLEGRO_TRANSFORM& transform) override {
         ALLEGRO_TRANSFORM t;
         al_identity_transform(&t);

@@ -13,9 +13,9 @@ Ship::Ship() {
 
     m_vertices = {
         {  0, -3 },
-        {  5, -5 },
-        {  0,  6 },
         { -5, -5 },
+        {  0,  6 },
+        {  5, -5 },
     };
     m_triangles = {
         { 0, 1, 2 },
@@ -65,7 +65,7 @@ void Ship::update() {
 
 
 void Ship::collision(Entity& other) {
-    if (Asteroid* a = dynamic_cast<Asteroid*>(&other)) {
+    if (dynamic_cast<Asteroid*>(&other)) {
         die();
         world.spawn_explosion(m_pos, 20);
     }

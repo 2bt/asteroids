@@ -40,19 +40,15 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
 
 
 void Asteroid::collision(Entity& other) {
-    if (Bullet* b = dynamic_cast<Bullet*>(&other)) {
-        b->die();
-        m_hit_delay = 5;
-        if (--m_health <= 0) {
-            die();
-            world.spawn_explosion(m_pos, m_radius);
-            if (m_size > 1) {
-                Entity& a1 = world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1));
-                Entity& a2 = world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1));
-
-                glm::vec2 dir = -glm::normalize(a1.vel() + a2.vel());
-                world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1, &dir));
-            }
+    m_hit_delay = 5;
+    if (--m_health <= 0) {
+        die();
+        world.spawn_explosion(m_pos, m_radius);
+        if (m_size > 1) {
+            Entity& a1 = world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1));
+            Entity& a2 = world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1));
+            glm::vec2 dir = -glm::normalize(a1.vel() + a2.vel());
+            world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1, &dir));
         }
     }
 }
