@@ -71,6 +71,16 @@ void Ship::collision(Entity& other) {
 
 
 void Ship::draw(const ALLEGRO_TRANSFORM& transform) {
+    if (m_thrust % 4 > 1) {
+        ALLEGRO_TRANSFORM t;
+        al_identity_transform(&t);
+        al_rotate_transform(&t, m_ang);
+        al_translate_transform(&t, m_pos.x, m_pos.y);
+        al_compose_transform(&t, &transform);
+        al_use_transform(&t);
+        al_draw_filled_pieslice(0, -3, 3, ALLEGRO_PI + 0.2, ALLEGRO_PI - 0.4, al_map_rgb(255, 255, 255));
+    }
+
     al_use_transform(&transform);
     al_draw_polygon((float*) &m_transformed_vertices[0], 4,
                     ALLEGRO_LINE_JOIN_ROUND, al_map_rgb(255, 255, 255), 1, 0);
