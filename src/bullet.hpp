@@ -10,7 +10,7 @@ public:
         m_ang = ang;
         m_vel.x = -std::sin(m_ang) * 5;
         m_vel.y =  std::cos(m_ang) * 5;
-        m_pos = pos + m_vel;
+        m_pos = pos + m_vel * 2.0f;
 
         m_radius = 1.5;
         m_triangles = { { 0, 1, 2 } };

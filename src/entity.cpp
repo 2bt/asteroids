@@ -59,10 +59,10 @@ bool Entity::check_collision(const Entity& other) const {
     {
         glm::vec2 dif = other.m_pos - m_pos;
         glm::vec2 offset = {};
-        if (dif.x >  WIDTH)  offset.x = -WIDTH;
-        if (dif.x < -WIDTH)  offset.x =  WIDTH;
-        if (dif.y >  HEIGHT) offset.y = -HEIGHT;
-        if (dif.y < -HEIGHT) offset.y =  HEIGHT;
+        if (dif.x >  WIDTH / 2)  offset.x =  WIDTH;
+        if (dif.x < -WIDTH / 2)  offset.x = -WIDTH;
+        if (dif.y >  HEIGHT / 2) offset.y =  HEIGHT;
+        if (dif.y < -HEIGHT / 2) offset.y = -HEIGHT;
 
         return check_collision(other, offset);
     }

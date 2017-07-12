@@ -80,6 +80,9 @@ void World::draw() {
     ALLEGRO_TRANSFORM old_transform;
     al_copy_transform(&old_transform, al_get_current_transform());
 
+    //XXX
+    update();
+
     for (int sx = -1; sx <= 0; ++sx)
     for (int sy = -1; sy <= 0; ++sy) {
 

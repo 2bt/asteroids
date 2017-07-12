@@ -63,7 +63,8 @@ int main(int argc, char** argv) {
         }
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = true;
-            world.update();
+            //XXX
+            //world.update();
         }
         if (redraw && al_event_queue_is_empty(queue)) {
             redraw = false;
