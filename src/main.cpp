@@ -10,7 +10,6 @@ void resize(int width, int height) {
     al_clear_to_color(al_map_rgb(0, 0, 0));
     ALLEGRO_TRANSFORM t;
     al_identity_transform(&t);
-    al_translate_transform(&t, WIDTH / 2, HEIGHT / 2);
     if (width * HEIGHT < height * WIDTH) {
         float w = width  / (float) WIDTH;
         al_scale_transform(&t, w, w);

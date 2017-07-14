@@ -79,6 +79,55 @@ void World::update() {
 }
 
 
+inline int get_nibble(int d, int i) { return (d >> i * 4) & 0xf; }
+
+
+void print(const char* str) {
+
+    static const std::array<int, 10> data[96] = {
+        { 0x0040, 0x4046, 0x4606, 0x0600 },
+        { 0x2026 },
+        { 0x0040, 0x4043, 0x4303, 0x0306, 0x0646 },
+        { 0x0040, 0x0343, 0x0646, 0x4046 },
+        { 0x0003, 0x0343, 0x4046 },
+        { 0x0040, 0x0343, 0x4606, 0x0003, 0x4346 },
+        { 0x0006, 0x0646, 0x4643, 0x4303 },
+        { 0x0040, 0x4046 },
+        { 0x0040, 0x4046, 0x0006, 0x0646, 0x0343 },
+        { 0x0040, 0x4046, 0x0003, 0x0343 },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        { 0x0220, 0x2042, 0x4246, 0x0206, 0x0444 }, // a
+
+    };
+
+
+
+    glm::vec2 p = { 2, 2 };
+    while (char c = *str++) {
+        if (c >= '0' && c <= 'Z') {
+            for (int d : data[c - '0']) {
+                if (d == 0) break;
+                float vertices[4] = {
+                    p.x + get_nibble(d, 3),
+                    p.y + get_nibble(d, 2),
+                    p.x + get_nibble(d, 1),
+                    p.y + get_nibble(d, 0),
+                };
+                al_draw_polyline(vertices, 8, 2, 0, ALLEGRO_LINE_CAP_ROUND, al_map_rgb(255, 255, 255), 1, 0);
+            }
+
+        }
+        p.x += 6;
+    }
+}
+
+
 void World::draw() {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
@@ -86,29 +135,35 @@ void World::draw() {
     al_copy_transform(&old_transform, al_get_current_transform());
 
 
+
+
     for (int sx = -1; sx <= 0; ++sx)
     for (int sy = -1; sy <= 0; ++sy) {
 
         ALLEGRO_TRANSFORM t;
         al_identity_transform(&t);
+        al_translate_transform(&t, WIDTH / 2, HEIGHT / 2);
         al_translate_transform(&t, sx * WIDTH, sy * HEIGHT);
         al_compose_transform(&t, &old_transform);
 
         for (Entity::Ptr& e : m_entities) {
             e->draw(t);
-
             // bounding circle
             //al_use_transform(&t);
             //al_draw_circle(e->pos().x, e->pos().y, e->radius(), al_map_rgb(100, 100, 0), 0.5);
         }
     }
+
+
+    ALLEGRO_TRANSFORM t;
+    al_identity_transform(&t);
+//    al_scale_transform(&t, 2, 2);
+    al_compose_transform(&t, &old_transform);
+    al_use_transform(&t);
+
+    print("0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
+
     al_use_transform(&old_transform);
-
-
-//    //XXX
-//    update();
-
-
     al_flip_display();
 }
 
