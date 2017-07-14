@@ -28,7 +28,7 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
         m_radius = std::max(m_radius, r2);
         glm::vec2 v = { std::sin(ang), std::cos(ang) };
         m_vertices.emplace_back(v * r2);
-        m_triangles.emplace_back(0, j, (j + 1) % N);
+        m_triangles.emplace_back(0, j + 1, (j + 1) % N + 1);
     }
 
     m_collision_category = CC_ASTEROID;

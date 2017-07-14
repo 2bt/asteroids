@@ -32,13 +32,14 @@ void resize(int width, int height) {
 int main(int argc, char** argv) {
     al_init();
     al_init_primitives_addon();
-    al_init_font_addon();
+    al_install_keyboard();
+    al_install_mouse();
+
     al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
     al_set_new_display_option(ALLEGRO_SAMPLES, 4, ALLEGRO_SUGGEST);
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);
     ALLEGRO_EVENT_QUEUE * queue = al_create_event_queue();
-    al_install_keyboard();
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
     al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -63,8 +64,7 @@ int main(int argc, char** argv) {
         }
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = true;
-            //XXX
-            //world.update();
+            world.update();
         }
         if (redraw && al_event_queue_is_empty(queue)) {
             redraw = false;

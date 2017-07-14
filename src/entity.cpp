@@ -5,35 +5,28 @@
 inline glm::vec2 perp(const glm::vec2& v) { return { v.y, -v.x }; }
 
 
-bool Entity::check_collision_with_points(const std::vector<glm::vec2> ps,
-                                         const glm::vec2&             offset) const
-{
-    assert(!m_triangles.empty());
-    for (glm::ivec3 const & t : m_triangles) {
-        float distance = INFINITY;
-        bool colli = true;
+static bool triangle_collision(const glm::vec2* a, const glm::vec2* b) {
+    for (int side = 0; side < 2; ++side) {
+        float dist = INFINITY;
         for (int i = 0; i < 3; ++i) {
-            const glm::vec2& p1 = m_transformed_vertices[t[i]];
-            const glm::vec2& p2 = m_transformed_vertices[t[(i + 1) % 3]];
+            const glm::vec2& p1 = a[i];
+            const glm::vec2& p2 = a[(i + 1) % 3];
             glm::vec2 n = perp(p2 - p1);
             float c_d = 0;
-            for (const glm::vec2& p : ps) {
-                float d = glm::dot(p - p1 - offset, n);
+            for (int j = 0; j < 3; ++j) {
+                float d = glm::dot(b[j] - p1, n);
                 if (d > c_d) c_d = d;
             }
-            if (c_d == 0) {
-                colli = false;
-                break;
-            }
+            if (c_d == 0) return false;
             float l = glm::length(n);
             c_d /= l;
-            if (c_d < distance) {
-                distance = c_d;
+            if (c_d < dist) {
+                dist = c_d;
             }
         }
-        if (colli) return true;
+        std::swap(a, b);
     }
-    return false;
+    return true;
 }
 
 
@@ -43,10 +36,25 @@ bool Entity::check_collision(const Entity& other, const glm::vec2& offset) const
     if (m_triangles.empty() && other.m_triangles.empty()) return true;
     if (!m_triangles.empty() && !other.m_triangles.empty()) {
 
-        // test all triangles against all other points and vice versa
-        return check_collision_with_points(other.m_transformed_vertices, offset) ||
-               other.check_collision_with_points(m_transformed_vertices, -offset);
+        // test all triangles against all other triangles
+        for (glm::ivec3 const & t1 : m_triangles) {
+            std::array<glm::vec2, 3> a = {
+                m_transformed_vertices[t1[0]] + offset,
+                m_transformed_vertices[t1[1]] + offset,
+                m_transformed_vertices[t1[2]] + offset,
+            };
+            for (glm::ivec3 const & t2 : other.m_triangles) {
+                std::array<glm::vec2, 3> b = {
+                    other.m_transformed_vertices[t2[0]],
+                    other.m_transformed_vertices[t2[1]],
+                    other.m_transformed_vertices[t2[2]],
+                };
+                if (triangle_collision(a.data(), b.data())) return true;
+            }
+        }
+        return false;
     }
+
     // TODO
     printf("TODO: implement triangles-circle-collision\n");
     return true;

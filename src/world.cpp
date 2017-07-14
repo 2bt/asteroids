@@ -41,7 +41,13 @@ void World::spawn_explosion(const glm::vec2& pos, float r) {
 
 
 void World::update() {
+//    // XXX
+//    ALLEGRO_MOUSE_STATE mouse;
+//    al_get_mouse_state(&mouse);
+//    glm::vec2 p = { mouse.x, mouse.y };
+//    al_transform_coordinates(al_get_current_inverse_transform(), &p.x, &p.y);
 
+    // update
     for (auto it = m_entities.begin(); it != m_entities.end();) {
         (*it)->update();
         if (!(*it)->is_alive()) {
@@ -52,7 +58,7 @@ void World::update() {
         ++it;
     }
 
-
+    // collision
     for (int i = 0; i < (int) m_entities.size() - 1; ++i) {
         Entity& e1 = *m_entities[i];
         for (int j = i + 1; j < (int) m_entities.size(); ++j) {
@@ -65,7 +71,6 @@ void World::update() {
             }
         }
     }
-
 
     // append new entities
     m_entities.resize(m_entities.size() + m_new_entities.size());
@@ -80,8 +85,6 @@ void World::draw() {
     ALLEGRO_TRANSFORM old_transform;
     al_copy_transform(&old_transform, al_get_current_transform());
 
-    //XXX
-    update();
 
     for (int sx = -1; sx <= 0; ++sx)
     for (int sy = -1; sy <= 0; ++sy) {
@@ -100,6 +103,12 @@ void World::draw() {
         }
     }
     al_use_transform(&old_transform);
+
+
+//    //XXX
+//    update();
+
+
     al_flip_display();
 }
 

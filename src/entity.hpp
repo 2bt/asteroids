@@ -87,8 +87,7 @@ protected:
     }
 
 private:
-    bool m_is_alive = true;
-
     bool check_collision(const Entity& other, const glm::vec2& offset) const;
-    bool check_collision_with_points(const std::vector<glm::vec2> ps, const glm::vec2& offset) const;
+
+    bool m_is_alive = true;
 };

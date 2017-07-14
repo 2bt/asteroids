@@ -12,9 +12,9 @@ public:
         m_vel.y =  std::cos(m_ang) * 5;
         m_pos = pos + m_vel * 2.0f;
 
-        m_radius = 1.5;
+        m_radius = 2;
         m_triangles = { { 0, 1, 2 } };
-        m_vertices = { { 0, 1 }, { 1, -1 }, { -1, -1 } };
+        m_vertices = { { 0, 2 }, { 1.5, -1 }, { -1.5, -1 } };
         m_collision_category = CC_BULLET;
         m_collision_mask     = CC_ASTEROID;
     }
