@@ -37,6 +37,12 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
 
 
 void Asteroid::collision(Entity& other) {
+//    if (dynamic_cast<Asteroid*>(&other)) {
+//        glm::vec2 n = glm::normalize(other.pos() - m_pos);
+//        m_vel -= 2.0f * glm::dot(n, m_vel) * n;
+//        return;
+//    }
+
     m_hit_delay = 5;
     if (--m_health <= 0) {
         die();

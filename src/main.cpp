@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     al_init();
     al_init_primitives_addon();
     al_install_keyboard();
-    al_install_mouse();
+    al_install_joystick();
 
     al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
     al_set_new_display_option(ALLEGRO_SAMPLES, 4, ALLEGRO_SUGGEST);
@@ -60,6 +60,9 @@ int main(int argc, char** argv) {
         }
         else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) break;
+        }
+        else if (event.type == ALLEGRO_EVENT_JOYSTICK_CONFIGURATION) {
+            al_reconfigure_joysticks();
         }
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = true;

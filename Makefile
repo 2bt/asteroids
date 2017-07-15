@@ -1,5 +1,5 @@
 CF = -Wall
-LF = -lallegro -lallegro_primitives -lallegro_font
+LF = -lallegro -lallegro_primitives
 CXX = g++
 SRC = $(wildcard src/*.cpp)
 OBJ = $(SRC:src/%.cpp=obj/%.o)
