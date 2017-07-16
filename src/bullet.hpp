@@ -11,6 +11,8 @@ public:
     void update() override;
     void collision(Entity& other) override;
     void draw(const ALLEGRO_TRANSFORM& transform) override;
+    Player& player() { return m_player; }
+
 private:
     Player& m_player;
     int     m_ttl = 50;

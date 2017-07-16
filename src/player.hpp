@@ -14,7 +14,7 @@ struct Input {
 
 class Player {
 public:
-
+    void update();
     const Input& input() const { return m_input; }
     void set_ship(Ship* ship) {
         m_ship = ship;
@@ -22,8 +22,6 @@ public:
     }
     int score() const { return m_score; }
     void inc_score(int s) { m_score += s; }
-
-    void update();
 
 private:
 	Ship* m_ship  = nullptr;

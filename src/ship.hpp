@@ -7,11 +7,11 @@
 
 class Ship : public Entity {
 public:
-
     Ship(Player& player);
     void update() override;
     void collision(Entity& other) override;
     void draw(const ALLEGRO_TRANSFORM& transform) override;
+    Player& player() { return m_player; }
 
 private:
     int       m_thrust      = 0;

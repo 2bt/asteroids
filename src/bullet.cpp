@@ -1,6 +1,5 @@
 // vim: ts=4 sw=4 sts=4 et
 #include "bullet.hpp"
-#include "asteroid.hpp"
 
 
 Bullet::Bullet(Player& player, const glm::vec2& pos, float ang)
@@ -28,9 +27,6 @@ void Bullet::update() {
 
 void Bullet::collision(Entity& other) {
 	die();
-    if (Asteroid* a = dynamic_cast<Asteroid*>(&other)) {
-		m_player.inc_score(100);
-	}
 }
 
 

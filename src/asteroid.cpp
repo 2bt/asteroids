@@ -3,6 +3,7 @@
 #include "world.hpp"
 
 #include "bullet.hpp"
+#include "ship.hpp"
 
 
 Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
@@ -46,6 +47,11 @@ void Asteroid::collision(Entity& other) {
     m_hit_delay = 5;
     if (--m_health <= 0) {
         die();
+
+        int score = m_size == 3 ? 20 : m_size == 2 ? 50 : 100;
+        if (Bullet* b = dynamic_cast<Bullet*>(&other)) b->player().inc_score(score);
+        if (Ship*   s = dynamic_cast<Ship*  >(&other)) s->player().inc_score(score);
+
         world.spawn_explosion(m_pos, m_radius);
         if (m_size > 1) {
             Entity& a1 = world.spawn(std::make_unique<Asteroid>(m_pos, m_size - 1));

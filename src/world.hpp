@@ -12,16 +12,12 @@ public:
     void update();
     void draw();
 
-
     Entity& spawn(Entity::Ptr&& e);
     void spawn_explosion(const glm::vec2& pos, float r);
 
-
 private:
     std::vector<Entity::Ptr> m_entities;
-
     std::vector<Entity::Ptr> m_new_entities;
-
     Player                   m_player;
 };
 
