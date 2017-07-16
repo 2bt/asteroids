@@ -13,7 +13,7 @@ void World::init() {
 
     m_entities.clear();
 
-    spawn(std::make_unique<Ship>());
+
     for (int i = 0; i < 5; ++i) {
         glm::vec2 pos = {
             random_float(0, WIDTH),
@@ -47,6 +47,9 @@ void World::update() {
 //    al_get_mouse_state(&mouse);
 //    glm::vec2 p = { mouse.x, mouse.y };
 //    al_transform_coordinates(al_get_current_inverse_transform(), &p.x, &p.y);
+
+
+    m_player.update();
 
     // update
     for (auto it = m_entities.begin(); it != m_entities.end();) {

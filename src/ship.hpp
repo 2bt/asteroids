@@ -2,12 +2,13 @@
 #pragma once
 
 #include "entity.hpp"
+#include "player.hpp"
 
 
 class Ship : public Entity {
 public:
 
-    Ship();
+    Ship(Player& player);
     void update() override;
     void collision(Entity& other) override;
     void draw(const ALLEGRO_TRANSFORM& transform) override;
@@ -15,4 +16,5 @@ public:
 private:
     int       m_thrust      = 0;
     int       m_shoot_delay = 0;
+    Player&   m_player;
 };

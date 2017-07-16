@@ -5,7 +5,11 @@
 #include "asteroid.hpp"
 
 
-Ship::Ship() {
+Ship::Ship(Player& player)
+    : m_player(player)
+{
+    m_player.set_ship(this);
+
     m_ang                = ALLEGRO_PI;
     m_radius             = glm::length(glm::vec2(5, 5));
     m_collision_category = CC_SHIP;
@@ -25,17 +29,11 @@ Ship::Ship() {
 
 
 void Ship::update() {
-    static ALLEGRO_KEYBOARD_STATE keyboard_state;
-    al_get_keyboard_state(&keyboard_state);
-
-    int dx    = al_key_down(&keyboard_state, ALLEGRO_KEY_RIGHT)
-              - al_key_down(&keyboard_state, ALLEGRO_KEY_LEFT);
-    int dy    = al_key_down(&keyboard_state, ALLEGRO_KEY_UP);
-    int shoot = al_key_down(&keyboard_state, ALLEGRO_KEY_X);
+    const Input& input = m_player.input();
 
     // movement
-    m_ang += dx * 0.075;
-    if (dy) {
+    m_ang += input.dx * 0.075;
+    if (input.dy) {
         m_vel.x -= std::sin(m_ang) * 0.05f;
         m_vel.y += std::cos(m_ang) * 0.05f;
         ++m_thrust;
@@ -55,7 +53,7 @@ void Ship::update() {
     }
 
     // shooting
-    if (shoot && m_shoot_delay == 0) {
+    if (input.shoot && m_shoot_delay == 0) {
         m_shoot_delay = 10;
         world.spawn(std::make_unique<Bullet>(m_pos, m_ang));
     }
@@ -66,6 +64,7 @@ void Ship::update() {
 
 void Ship::collision(Entity& other) {
     if (dynamic_cast<Asteroid*>(&other)) {
+        m_player.set_ship(nullptr);
         die();
         world.spawn_explosion(m_pos, 20);
     }

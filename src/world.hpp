@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "entity.hpp"
+#include "player.hpp"
 
 
 class World {
@@ -20,6 +21,8 @@ private:
     std::vector<Entity::Ptr> m_entities;
 
     std::vector<Entity::Ptr> m_new_entities;
+
+    Player                   m_player;
 };
 
 
