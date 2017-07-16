@@ -55,7 +55,7 @@ void Ship::update() {
     // shooting
     if (input.shoot && m_shoot_delay == 0) {
         m_shoot_delay = 10;
-        world.spawn(std::make_unique<Bullet>(m_pos, m_ang));
+        world.spawn(std::make_unique<Bullet>(m_player, m_pos, m_ang));
     }
     if (m_shoot_delay > 0) --m_shoot_delay;
 

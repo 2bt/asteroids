@@ -119,8 +119,7 @@ void World::draw() {
     al_compose_transform(&t, &old_transform);
     al_use_transform(&t);
 
-    static int i = 0;
-    font.printf({ 5, 5 }, "hello %d", ++i);
+    font.printf({ 5, 5 }, "score: %d", m_player.score());
 
     al_use_transform(&old_transform);
     al_flip_display();

@@ -20,6 +20,9 @@ public:
         m_ship = ship;
         if (!m_ship) --m_lives;
     }
+    int score() const { return m_score; }
+    void inc_score(int s) { m_score += s; }
+
     void update();
 
 private:
