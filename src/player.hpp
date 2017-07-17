@@ -14,6 +14,7 @@ struct Input {
 
 class Player {
 public:
+    Player();
     void update();
     const Input& input() const { return m_input; }
     void set_ship(Ship* ship) {

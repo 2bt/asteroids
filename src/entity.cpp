@@ -30,6 +30,17 @@ static bool triangle_collision(const glm::vec2* a, const glm::vec2* b) {
 }
 
 
+void Entity::update_transformed_vertices() {
+    m_transformed_vertices.resize(m_vertices.size());
+    std::copy(m_vertices.begin(), m_vertices.end(), m_transformed_vertices.begin());
+    ALLEGRO_TRANSFORM t;
+    al_identity_transform(&t);
+    al_rotate_transform(&t, m_ang);
+    al_translate_transform(&t, m_pos.x, m_pos.y);
+    for (glm::vec2 & v : m_transformed_vertices) al_transform_coordinates(&t, &v.x, &v.y);
+}
+
+
 bool Entity::check_collision(const Entity& other, const glm::vec2& offset) const {
     float r = m_radius + other.m_radius;
     if (glm::length2(m_pos - other.m_pos + offset) >= r * r) return false;
@@ -60,20 +71,4 @@ bool Entity::check_collision(const Entity& other, const glm::vec2& offset) const
     return true;
 }
 
-
-bool Entity::check_collision(const Entity& other) const {
-    if (m_collision_category & other.m_collision_mask &&
-        other.m_collision_category & m_collision_mask)
-    {
-        glm::vec2 dif = other.m_pos - m_pos;
-        glm::vec2 offset = {};
-        if (dif.x >  WIDTH / 2)  offset.x =  WIDTH;
-        if (dif.x < -WIDTH / 2)  offset.x = -WIDTH;
-        if (dif.y >  HEIGHT / 2) offset.y =  HEIGHT;
-        if (dif.y < -HEIGHT / 2) offset.y = -HEIGHT;
-
-        return check_collision(other, offset);
-    }
-    return false;
-}
 

@@ -3,12 +3,15 @@
 #include "ship.hpp"
 #include "world.hpp"
 
+Player::Player() {
+	world.spawn(std::make_unique<Ship>(*this, false));
+}
 
 void Player::update() {
 
 	// respawn
 	if (!m_ship && m_lives > 0) {
-		world.spawn(std::make_unique<Ship>(*this));
+		world.spawn(std::make_unique<Ship>(*this, true));
 	}
 
 	// input

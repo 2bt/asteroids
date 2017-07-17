@@ -42,24 +42,16 @@ public:
     virtual void collision(Entity& other) {}
     virtual ~Entity() {}
 
-    bool is_alive() const { return m_is_alive; }
-    const glm::vec2& pos() const { return m_pos; }
-    const glm::vec2& vel() const { return m_vel; }
-    float radius() const { return m_radius; }
+    bool             is_alive()           const { return m_is_alive; }
+    const glm::vec2& pos()                const { return m_pos; }
+    const glm::vec2& vel()                const { return m_vel; }
+    float            radius()             const { return m_radius; }
+    int              collision_mask()     const { return m_collision_mask; }
+    int              collision_category() const { return m_collision_category; }
 
     void die() { m_is_alive = false; }
-    bool check_collision(const Entity& other) const;
-
-    void update_transformed_vertices() {
-        m_transformed_vertices.resize(m_vertices.size());
-        std::copy(m_vertices.begin(), m_vertices.end(), m_transformed_vertices.begin());
-        ALLEGRO_TRANSFORM t;
-        al_identity_transform(&t);
-        al_rotate_transform(&t, m_ang);
-        al_translate_transform(&t, m_pos.x, m_pos.y);
-        for (glm::vec2 & v : m_transformed_vertices) al_transform_coordinates(&t, &v.x, &v.y);
-    }
-
+    bool check_collision(const Entity& other, const glm::vec2& offset) const;
+    void update_transformed_vertices();
 
 
 protected:
@@ -74,8 +66,8 @@ protected:
     std::vector<glm::ivec3> m_triangles;
     std::vector<glm::vec2>  m_transformed_vertices;
     float                   m_radius             = 0;
-    uint32_t                m_collision_category = 0;
-    uint32_t                m_collision_mask     = 0;
+    int                     m_collision_category = 0;
+    int                     m_collision_mask     = 0;
 
 
     void warp_pos() {
@@ -86,7 +78,5 @@ protected:
     }
 
 private:
-    bool check_collision(const Entity& other, const glm::vec2& offset) const;
-
     bool m_is_alive = true;
 };

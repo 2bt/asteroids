@@ -15,5 +15,5 @@ public:
 
 private:
     Player& m_player;
-    int     m_ttl = 50;
+    int     m_ttl = 55;
 };

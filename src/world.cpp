@@ -63,9 +63,18 @@ void World::update() {
         Entity& e1 = *m_entities[i];
         for (int j = i + 1; j < (int) m_entities.size(); ++j) {
             Entity& e2 = *m_entities[j];
-            if (!e1.is_alive()) break;
-            if (!e2.is_alive()) continue;
-            if (e1.check_collision(e2)) {
+            if (!e1.is_alive() || !e1.collision_mask()) break;
+            if (!e2.is_alive() || !e2.collision_mask() ||
+                !(e1.collision_category() & e2.collision_mask()) ||
+                !(e2.collision_category() & e1.collision_mask())) continue;
+
+            glm::vec2 dif = e2.pos() - e1.pos();
+            glm::vec2 offset = {};
+            if (dif.x >  WIDTH / 2)  offset.x =  WIDTH;
+            if (dif.x < -WIDTH / 2)  offset.x = -WIDTH;
+            if (dif.y >  HEIGHT / 2) offset.y =  HEIGHT;
+            if (dif.y < -HEIGHT / 2) offset.y = -HEIGHT;
+            if (e1.check_collision(e2, offset)) {
                 e1.collision(e2);
                 e2.collision(e1);
             }

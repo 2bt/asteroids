@@ -5,15 +5,14 @@
 #include "asteroid.hpp"
 
 
-Ship::Ship(Player& player)
+Ship::Ship(Player& player, bool invincible)
     : m_player(player)
 {
     m_player.set_ship(this);
-
     m_ang                = ALLEGRO_PI;
     m_radius             = glm::length(glm::vec2(5, 5));
     m_collision_category = CC_SHIP;
-    m_collision_mask     = CC_ASTEROID;
+    m_noclip_counter     = invincible ? 120 : 0;
 
     m_vertices = {
         {  0, -3 },
@@ -29,6 +28,10 @@ Ship::Ship(Player& player)
 
 
 void Ship::update() {
+    if (m_noclip_counter > 0) --m_noclip_counter;
+    if (m_noclip_counter == 0) m_collision_mask = CC_ASTEROID;
+
+
     const Input& input = m_player.input();
 
     // movement
@@ -36,10 +39,10 @@ void Ship::update() {
     if (input.dy) {
         m_vel.x -= std::sin(m_ang) * 0.05f;
         m_vel.y += std::cos(m_ang) * 0.05f;
-        ++m_thrust;
+        ++m_thrust_counter;
     }
     else {
-        m_thrust = 0;
+        m_thrust_counter = 0;
     }
 
     m_vel *= 0.99f;
@@ -54,11 +57,10 @@ void Ship::update() {
 
     // shooting
     if (input.shoot && m_shoot_delay == 0) {
-        m_shoot_delay = 10;
+        m_shoot_delay = 15;
         world.spawn(std::make_unique<Bullet>(m_player, m_pos, m_ang));
     }
     if (m_shoot_delay > 0) --m_shoot_delay;
-
 }
 
 
@@ -72,7 +74,9 @@ void Ship::collision(Entity& other) {
 
 
 void Ship::draw(const ALLEGRO_TRANSFORM& transform) {
-    if (m_thrust % 4 > 1) {
+    if (m_collision_mask == 0 && m_noclip_counter % 8 < 4) return;
+
+    if (m_thrust_counter % 4 > 1) {
         ALLEGRO_TRANSFORM t;
         al_identity_transform(&t);
         al_rotate_transform(&t, m_ang);
