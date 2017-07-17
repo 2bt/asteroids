@@ -13,13 +13,15 @@ void World::init() {
 
     m_entities.clear();
 
-
     for (int i = 0; i < 5; ++i) {
-        glm::vec2 pos = {
-            random_float(0, WIDTH),
-            random_float(0, HEIGHT)
-        };
-        spawn( std::make_unique<Asteroid>(pos, 3));
+        glm::vec2 pos;
+        do {
+            pos = { random_float(-WIDTH / 2, WIDTH / 2),
+                    random_float(-HEIGHT / 2, HEIGHT / 2) };
+        } while (glm::length2(pos) < (WIDTH / 4) * (WIDTH / 4));
+        if (pos.x < 0) pos.x += WIDTH;
+        if (pos.y < 0) pos.y += HEIGHT;
+        spawn(std::make_unique<Asteroid>(pos, 3));
     }
 }
 
@@ -42,16 +44,10 @@ void World::spawn_explosion(const glm::vec2& pos, float r) {
 
 
 void World::update() {
-//    // XXX
-//    ALLEGRO_MOUSE_STATE mouse;
-//    al_get_mouse_state(&mouse);
-//    glm::vec2 p = { mouse.x, mouse.y };
-//    al_transform_coordinates(al_get_current_inverse_transform(), &p.x, &p.y);
-
 
     m_player.update();
 
-    // update
+    // update entities
     for (auto it = m_entities.begin(); it != m_entities.end();) {
         (*it)->update();
         if (!(*it)->is_alive()) {
