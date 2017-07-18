@@ -16,11 +16,9 @@ void World::init() {
     for (int i = 0; i < 5; ++i) {
         glm::vec2 pos;
         do {
-            pos = { random_float(-WIDTH / 2, WIDTH / 2),
-                    random_float(-HEIGHT / 2, HEIGHT / 2) };
-        } while (glm::length2(pos) < (WIDTH / 4) * (WIDTH / 4));
-        if (pos.x < 0) pos.x += WIDTH;
-        if (pos.y < 0) pos.y += HEIGHT;
+            pos = { random_float(0, WIDTH),
+                    random_float(0, HEIGHT) };
+        } while (glm::distance2(pos, { WIDTH / 2, HEIGHT / 2 }) < (HEIGHT / 4) * (HEIGHT / 4));
         spawn(std::make_unique<Asteroid>(pos, 3));
     }
 }
@@ -100,13 +98,11 @@ void World::draw() {
 
 
 
-
-    for (int sx = -1; sx <= 0; ++sx)
-    for (int sy = -1; sy <= 0; ++sy) {
+    for (int sx = -1; sx <= 1; ++sx)
+    for (int sy = -1; sy <= 1; ++sy) {
 
         ALLEGRO_TRANSFORM t;
         al_identity_transform(&t);
-        al_translate_transform(&t, WIDTH / 2, HEIGHT / 2);
         al_translate_transform(&t, sx * WIDTH, sy * HEIGHT);
         al_compose_transform(&t, &old_transform);
 

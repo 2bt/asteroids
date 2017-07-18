@@ -14,6 +14,8 @@ Ship::Ship(Player& player, bool invincible)
     m_collision_category = CC_SHIP;
     m_noclip_counter     = invincible ? 120 : 0;
 
+    m_pos = { WIDTH / 2, HEIGHT / 2 };
+
     m_vertices = {
         {  0, -3 },
         { -5, -5 },
