@@ -11,6 +11,7 @@ public:
     void update() override;
     void collision(Entity& other) override;
     void draw(const ALLEGRO_TRANSFORM& transform) override;
+    bool needs_killing() const override { return true; }
 
 private:
     float                     m_vang;

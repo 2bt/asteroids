@@ -56,9 +56,14 @@ void World::update() {
         ++it;
     }
 
+
+    m_level_done = true;
+
     // collision
     for (int i = 0; i < (int) m_entities.size() - 1; ++i) {
         Entity& e1 = *m_entities[i];
+        m_level_done &= !e1.needs_killing();
+
         for (int j = i + 1; j < (int) m_entities.size(); ++j) {
             Entity& e2 = *m_entities[j];
             if (!e1.is_alive() || !e1.collision_mask()) break;
@@ -97,7 +102,6 @@ void World::draw() {
     al_copy_transform(&old_transform, al_get_current_transform());
 
 
-
     for (int sx = -1; sx <= 1; ++sx)
     for (int sy = -1; sy <= 1; ++sy) {
 
@@ -120,7 +124,17 @@ void World::draw() {
     al_compose_transform(&t, &old_transform);
     al_use_transform(&t);
 
+    font.set_size(1);
+    font.set_line_width(1);
+    font.set_align(Font::Align::LEFT);
     font.printf({ 5, 5 }, "score: %d", m_player.score());
+
+    if (m_level_done) {
+        font.set_size(3);
+        font.set_line_width(2);
+        font.set_align(Font::Align::CENTER);
+        font.printf({ WIDTH / 2, HEIGHT / 2 - 20 }, "level cleared");
+    }
 
     al_use_transform(&old_transform);
     al_flip_display();

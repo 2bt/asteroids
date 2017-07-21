@@ -63,6 +63,10 @@ void Font::printf(const glm::vec2& pos, const char* format, ...) const {
 
 void Font::print(const glm::vec2& pos, const char* text) const {
     glm::vec2 p = pos;
+    if (m_align == Align::CENTER) {
+        p.x -= (strlen(text) * 3 - 1) * m_size;
+    }
+
     while (char c = *text++) {
         if (c >= 0 && c < 128) {
             for (int d : m_data[c]) {

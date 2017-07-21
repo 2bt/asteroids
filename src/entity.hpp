@@ -41,6 +41,8 @@ public:
     virtual void draw(const ALLEGRO_TRANSFORM& transform) {}
     virtual void collision(Entity& other) {}
     virtual ~Entity() {}
+    virtual bool needs_killing() const { return false; }
+
 
     bool             is_alive()           const { return m_is_alive; }
     const glm::vec2& pos()                const { return m_pos; }
