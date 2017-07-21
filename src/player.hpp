@@ -1,20 +1,21 @@
 // vim: ts=4 sw=4 sts=4 et
 #pragma once
+#include <allegro5/allegro.h>
 
 
 class Ship;
 
 
 struct Input {
-    int  dx;
-    int  dy;
-    bool shoot;
+    float dx;
+    float dy;
+    bool  shoot;
 };
 
 
 class Player {
 public:
-    Player();
+    void init();
     void update();
     const Input& input() const { return m_input; }
     void set_ship(Ship* ship) {
@@ -25,8 +26,9 @@ public:
     void inc_score(int s) { m_score += s; }
 
 private:
-	Ship* m_ship  = nullptr;
-    int   m_score = 0;
-    int   m_lives = 3;
-    Input m_input;
+    Ship*             m_ship  = nullptr;
+    int               m_score = 0;
+    int               m_lives = 3;
+    Input             m_input;
+    ALLEGRO_JOYSTICK* m_joystick;
 };

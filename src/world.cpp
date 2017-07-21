@@ -10,8 +10,8 @@
 void World::init() {
 
     srand(time(nullptr));
-
     m_entities.clear();
+    m_player.init();
 
     for (int i = 0; i < 5; ++i) {
         glm::vec2 pos;

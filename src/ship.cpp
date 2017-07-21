@@ -38,7 +38,7 @@ void Ship::update() {
 
     // movement
     m_ang += input.dx * 0.075;
-    if (input.dy) {
+    if (input.dy > 0.33) {
         m_vel.x -= std::sin(m_ang) * 0.05f;
         m_vel.y += std::cos(m_ang) * 0.05f;
         ++m_thrust_counter;
