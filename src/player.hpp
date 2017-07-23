@@ -10,6 +10,9 @@ struct Input {
     float dx;
     float dy;
     bool  shoot;
+    bool  old_shoot;
+
+    bool button_down() const { return shoot && !old_shoot; }
 };
 
 
@@ -23,7 +26,9 @@ public:
         if (!m_ship) --m_lives;
     }
     int score() const { return m_score; }
+    int lives() const { return m_lives; }
     void inc_score(int s) { m_score += s; }
+
 
 private:
     Ship*             m_ship  = nullptr;

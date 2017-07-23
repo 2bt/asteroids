@@ -8,12 +8,20 @@
 
 
 void World::init() {
-
     srand(time(nullptr));
+    m_level_nr = 0;
+    m_running  = true;
+    next_level();
+}
+
+
+
+void World::next_level() {
+    ++m_level_nr;
+    m_done_counter = 0;
     m_entities.clear();
     m_player.init();
-
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < m_level_nr + 2; ++i) {
         glm::vec2 pos;
         do {
             pos = { random_float(0, WIDTH),
@@ -22,6 +30,7 @@ void World::init() {
         spawn(std::make_unique<Asteroid>(pos, 3));
     }
 }
+
 
 
 Entity& World::spawn(Entity::Ptr&& e) {
@@ -42,11 +51,20 @@ void World::spawn_explosion(const glm::vec2& pos, float r) {
 
 
 void World::update() {
+    if (m_level_done && ++m_done_counter > 60 && m_player.input().button_down()) {
+        next_level();
+    }
+    if (m_player.lives() == 0 && ++m_done_counter > 60 && m_player.input().button_down()) {
+        m_running = false;
+    }
+
 
     m_player.update();
 
     // update entities
+    m_level_done = true;
     for (auto it = m_entities.begin(); it != m_entities.end();) {
+        m_level_done &= !(*it)->needs_killing();
         (*it)->update();
         if (!(*it)->is_alive()) {
             it = m_entities.erase(it);
@@ -57,12 +75,10 @@ void World::update() {
     }
 
 
-    m_level_done = true;
 
     // collision
     for (int i = 0; i < (int) m_entities.size() - 1; ++i) {
         Entity& e1 = *m_entities[i];
-        m_level_done &= !e1.needs_killing();
 
         for (int j = i + 1; j < (int) m_entities.size(); ++j) {
             Entity& e2 = *m_entities[j];
@@ -89,9 +105,6 @@ void World::update() {
     std::move(m_new_entities.begin(), m_new_entities.end(), m_entities.end() - m_new_entities.size());
     m_new_entities.clear();
 }
-
-
-
 
 
 
@@ -127,13 +140,14 @@ void World::draw() {
     font.set_size(1);
     font.set_line_width(1);
     font.set_align(Font::Align::LEFT);
-    font.printf({ 5, 5 }, "score: %d", m_player.score());
+    font.printf({ 3, 3 }, "level:%d  lives:%d  score:%d", m_level_nr, m_player.lives(), m_player.score());
 
-    if (m_level_done) {
+    if (m_level_done || m_player.lives() == 0) {
         font.set_size(3);
         font.set_line_width(2);
         font.set_align(Font::Align::CENTER);
-        font.printf({ WIDTH / 2, HEIGHT / 2 - 20 }, "level cleared");
+        if (m_level_done) font.printf({ WIDTH / 2, HEIGHT / 2 - 20 }, "level cleared");
+        else              font.printf({ WIDTH / 2, HEIGHT / 2 - 20 }, "game over");
     }
 
     al_use_transform(&old_transform);

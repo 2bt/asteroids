@@ -18,7 +18,7 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
 
     float r  = m_health * 10;
     m_pos   += m_vel * r * 0.3f;
-    m_vel   *= random_float(0.25, 0.5) * (4 - m_size);
+    m_vel   *= random_float(0.25, 0.5) * (4 - m_size) * std::pow(1.1f, world.level_nr());
 
     // unique mesh
     m_vertices.emplace_back();

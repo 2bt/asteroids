@@ -47,12 +47,10 @@ int main(int argc, char** argv) {
     resize(WIDTH, HEIGHT);
     world.init();
     bool redraw = false;
-    for (;;) {
+    while (world.running()) {
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
-        if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-            break;
-        }
+        if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
         else if (event.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
             redraw = true;
             resize(event.display.width, event.display.height);

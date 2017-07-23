@@ -21,6 +21,7 @@ void Player::update() {
     }
 
     // input
+    m_input.old_shoot = m_input.shoot;
     static ALLEGRO_KEYBOARD_STATE keyboard_state;
     al_get_keyboard_state(&keyboard_state);
     m_input.dx    = al_key_down(&keyboard_state, ALLEGRO_KEY_RIGHT)

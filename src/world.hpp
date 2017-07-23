@@ -15,12 +15,20 @@ public:
     Entity& spawn(Entity::Ptr&& e);
     void spawn_explosion(const glm::vec2& pos, float r);
 
+    int level_nr() const { return m_level_nr; }
+    bool running() const { return m_running; }
+
 private:
+    void next_level();
+
     std::vector<Entity::Ptr> m_entities;
     std::vector<Entity::Ptr> m_new_entities;
     Player                   m_player;
 
+    int                      m_level_nr;
     bool                     m_level_done;
+    int                      m_done_counter;
+    bool                     m_running;
 };
 
 
