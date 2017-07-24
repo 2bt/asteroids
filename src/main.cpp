@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     al_init_primitives_addon();
     al_install_keyboard();
     al_install_joystick();
-
+    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
     al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
     al_set_new_display_option(ALLEGRO_SAMPLES, 4, ALLEGRO_SUGGEST);
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
     al_hide_mouse_cursor(display);
-    resize(WIDTH, HEIGHT);
+    resize(al_get_display_width(display), al_get_display_height(display));
     world.init();
     bool redraw = false;
     while (world.running()) {

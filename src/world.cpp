@@ -12,6 +12,7 @@ void World::init() {
     m_level_nr = 0;
     m_running  = true;
     next_level();
+    update();
 }
 
 
