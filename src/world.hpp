@@ -19,7 +19,7 @@ public:
     bool running() const { return m_running; }
 
 private:
-    void next_level();
+    void init_level(int nr);
 
     std::vector<Entity::Ptr> m_entities;
     std::vector<Entity::Ptr> m_new_entities;

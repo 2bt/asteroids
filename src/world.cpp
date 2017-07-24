@@ -11,14 +11,13 @@ void World::init() {
     srand(time(nullptr));
     m_level_nr = 0;
     m_running  = true;
-    next_level();
-    update();
+    init_level(1);
 }
 
 
 
-void World::next_level() {
-    ++m_level_nr;
+void World::init_level(int nr) {
+    m_level_nr = nr;
     m_done_counter = 0;
     m_entities.clear();
     m_player.init();
@@ -30,6 +29,7 @@ void World::next_level() {
         } while (glm::distance2(pos, { WIDTH / 2, HEIGHT / 2 }) < (HEIGHT / 4) * (HEIGHT / 4));
         spawn(std::make_unique<Asteroid>(pos, 3));
     }
+    update();
 }
 
 
@@ -53,7 +53,7 @@ void World::spawn_explosion(const glm::vec2& pos, float r) {
 
 void World::update() {
     if (m_level_done && ++m_done_counter > 60 && m_player.input().button_down()) {
-        next_level();
+        init_level(m_level_nr + 1);
     }
     if (m_player.lives() == 0 && ++m_done_counter > 60 && m_player.input().button_down()) {
         m_running = false;

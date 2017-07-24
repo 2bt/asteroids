@@ -15,7 +15,7 @@ public:
 
 private:
     int       m_thrust_counter = 0;
-    int       m_shoot_delay    = 0;
+    int       m_shoot_delay    = 30;
     int       m_noclip_counter;
     Player&   m_player;
 };
