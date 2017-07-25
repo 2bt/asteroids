@@ -1,14 +1,16 @@
 // vim: ts=4 sw=4 sts=4 et
+#include <chrono>
 #include "world.hpp"
 #include "ship.hpp"
 #include "asteroid.hpp"
 #include "particle.hpp"
 #include "font.hpp"
-#include <ctime>
 
 
 void World::init() {
-    srand(time(nullptr));
+    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    m_random.seed(seed);
+
     m_level_nr = 0;
     m_running  = true;
     init_level(1);
@@ -24,8 +26,8 @@ void World::init_level(int nr) {
     for (int i = 0; i < m_level_nr + 2; ++i) {
         glm::vec2 pos;
         do {
-            pos = { random_float(0, WIDTH),
-                    random_float(0, HEIGHT) };
+            pos = { world.random_float(0, WIDTH),
+                    world.random_float(0, HEIGHT) };
         } while (glm::distance2(pos, { WIDTH / 2, HEIGHT / 2 }) < (HEIGHT / 4) * (HEIGHT / 4));
         spawn(std::make_unique<Asteroid>(pos, 3));
     }
@@ -43,10 +45,10 @@ Entity& World::spawn(Entity::Ptr&& e) {
 
 void World::spawn_explosion(const glm::vec2& pos, float r) {
     for (int i = 0; i < r * r / 20; ++i) {
-        float ang = random_float(0, 2 * ALLEGRO_PI);
-        float speed = random_float(0, 1.5);
+        float ang = world.random_float(0, 2 * ALLEGRO_PI);
+        float speed = world.random_float(0, 1.5);
         glm::vec2 vel = glm::vec2(std::sin(ang), std::cos(ang)) * speed;
-        spawn(std::make_unique<Particle>(pos + vel * r * 0.5f, vel, random_float(20, 40)));
+        spawn(std::make_unique<Particle>(pos + vel * r * 0.5f, vel, world.random_float(20, 40)));
     }
 }
 

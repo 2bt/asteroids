@@ -10,22 +10,22 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
     m_pos    = pos;
     m_size   = size;
     m_health = m_size;
-    m_ang    = random_float(0, 2 * ALLEGRO_PI);
-    m_vang   = random_float(-1, 1) * 0.01 * (4 - m_size);
+    m_ang    = world.random_float(0, 2 * ALLEGRO_PI);
+    m_vang   = world.random_float(-1, 1) * 0.01 * (4 - m_size);
 
     if (dir) m_vel = *dir;
     else     m_vel = { std::sin(m_ang), std::cos(m_ang) };
 
     float r  = m_health * 10;
     m_pos   += m_vel * r * 0.3f;
-    m_vel   *= random_float(0.25, 0.5) * (4 - m_size) * std::pow(1.1f, world.level_nr());
+    m_vel   *= world.random_float(0.25, 0.5) * (4 - m_size) * std::pow(1.1f, world.level_nr());
 
     // unique mesh
     m_vertices.emplace_back();
     const int N = 12;
     for (int j = 0; j < N; ++j) {
-        float r2 = random_float(0.7, 1.3) * r;
-        float ang = (j + random_float(0, 0.9)) / N * 2 * ALLEGRO_PI;
+        float r2 = world.random_float(0.7, 1.3) * r;
+        float ang = (j + world.random_float(0, 0.9)) / N * 2 * ALLEGRO_PI;
         m_radius = std::max(m_radius, r2);
         glm::vec2 v = { std::sin(ang), std::cos(ang) };
         m_vertices.emplace_back(v * r2);

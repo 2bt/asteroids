@@ -2,6 +2,7 @@
 #pragma once
 
 #include <vector>
+#include <random>
 #include "entity.hpp"
 #include "player.hpp"
 
@@ -18,17 +19,23 @@ public:
     int level_nr() const { return m_level_nr; }
     bool running() const { return m_running; }
 
+    float random_float(float a, float b) {
+        return std::uniform_real_distribution<float>(a, b)(m_random);
+    }
+
+
 private:
     void init_level(int nr);
 
-    std::vector<Entity::Ptr> m_entities;
-    std::vector<Entity::Ptr> m_new_entities;
-    Player                   m_player;
+    std::vector<Entity::Ptr>   m_entities;
+    std::vector<Entity::Ptr>   m_new_entities;
+    Player                     m_player;
 
-    int                      m_level_nr;
-    bool                     m_level_done;
-    int                      m_done_counter;
-    bool                     m_running;
+    int                        m_level_nr;
+    bool                       m_level_done;
+    int                        m_done_counter;
+    bool                       m_running;
+    std::default_random_engine m_random;
 };
 
 

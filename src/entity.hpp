@@ -15,11 +15,6 @@ enum {
 };
 
 
-inline float random_float(float a, float b) {
-    return a + rand() / (float) RAND_MAX * (b - a);
-}
-
-
 struct CollisionInfo {
     glm::vec2 pos;
     glm::vec2 normal;
