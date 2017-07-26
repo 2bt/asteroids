@@ -3,6 +3,7 @@
 #include "bullet.hpp"
 #include "world.hpp"
 #include "asteroid.hpp"
+#include "audio.hpp"
 
 
 Ship::Ship(Player& player, bool invincible)
@@ -61,6 +62,7 @@ void Ship::update() {
     if (input.shoot && m_shoot_delay == 0) {
         m_shoot_delay = 13;
         world.spawn(std::make_unique<Bullet>(m_player, m_pos, m_ang));
+        audio.sound(0, m_pos.x / WIDTH);
     }
     if (m_shoot_delay > 0) --m_shoot_delay;
 }
