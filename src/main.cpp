@@ -1,5 +1,6 @@
 // vim: ts=4 sw=4 sts=4 et
 #include "world.hpp"
+#include <allegro5/allegro_audio.h>
 
 
 enum { FPS = 60 };
@@ -31,6 +32,7 @@ void resize(int width, int height) {
 int main(int argc, char** argv) {
     al_init();
     al_init_primitives_addon();
+    al_install_audio();
     al_install_keyboard();
     al_install_joystick();
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);

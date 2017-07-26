@@ -28,7 +28,7 @@ void World::init_level(int nr) {
         do {
             pos = { random_float(0, WIDTH),
                     random_float(0, HEIGHT) };
-        } while (glm::distance2(pos, { WIDTH / 2, HEIGHT / 2 }) < (HEIGHT / 4) * (HEIGHT / 4));
+        } while (glm::distance2(pos, { WIDTH / 2, HEIGHT / 2 }) < (HEIGHT / 3) * (HEIGHT / 3));
         spawn(std::make_unique<Asteroid>(pos, 3));
     }
     update();
