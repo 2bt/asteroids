@@ -11,7 +11,6 @@ void World::init() {
     auto seed = std::chrono::system_clock::now().time_since_epoch().count();
     m_random.seed(seed);
     m_level_nr = 0;
-    m_running  = true;
     init_level(1);
 }
 
@@ -55,7 +54,7 @@ void World::update() {
         init_level(m_level_nr + 1);
     }
     if (m_player.lives() == 0 && ++m_done_counter > 60 && m_player.input().button_down()) {
-        m_running = false;
+        init();
     }
 
     m_player.update();

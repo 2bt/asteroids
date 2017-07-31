@@ -11,6 +11,8 @@ void Player::init() {
         m_joystick = al_get_joystick(0);
     }
 
+    m_score = 0;
+    m_lives = 3;
 }
 
 void Player::update() {

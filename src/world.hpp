@@ -17,7 +17,6 @@ public:
     void spawn_explosion(const glm::vec2& pos, float r);
 
     int level_nr() const { return m_level_nr; }
-    bool running() const { return m_running; }
 
     float random_float(float a, float b) {
         return std::uniform_real_distribution<float>(a, b)(m_random);
@@ -34,7 +33,6 @@ private:
     int                        m_level_nr;
     bool                       m_level_done;
     int                        m_done_counter;
-    bool                       m_running;
     std::default_random_engine m_random;
 };
 

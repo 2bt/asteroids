@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
 
     world.init();
     bool redraw = false;
-    while (world.running()) {
+    for (;;) {
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
