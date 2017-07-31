@@ -10,12 +10,10 @@
 void World::init() {
     auto seed = std::chrono::system_clock::now().time_since_epoch().count();
     m_random.seed(seed);
-
     m_level_nr = 0;
     m_running  = true;
     init_level(1);
 }
-
 
 
 void World::init_level(int nr) {
@@ -33,7 +31,6 @@ void World::init_level(int nr) {
     }
     update();
 }
-
 
 
 Entity& World::spawn(Entity::Ptr&& e) {
@@ -61,7 +58,6 @@ void World::update() {
         m_running = false;
     }
 
-
     m_player.update();
 
     // update entities
@@ -76,8 +72,6 @@ void World::update() {
         (*it)->update_transformed_vertices();
         ++it;
     }
-
-
 
     // collision
     for (int i = 0; i < (int) m_entities.size() - 1; ++i) {
@@ -110,30 +104,22 @@ void World::update() {
 }
 
 
-
 void World::draw() {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
     ALLEGRO_TRANSFORM old_transform;
     al_copy_transform(&old_transform, al_get_current_transform());
 
-
     for (int sx = -1; sx <= 1; ++sx)
     for (int sy = -1; sy <= 1; ++sy) {
-
         ALLEGRO_TRANSFORM t;
         al_identity_transform(&t);
         al_translate_transform(&t, sx * WIDTH, sy * HEIGHT);
         al_compose_transform(&t, &old_transform);
-
         for (Entity::Ptr& e : m_entities) {
             if (e->is_alive()) e->draw(t);
-            // bounding circle
-            //al_use_transform(&t);
-            //al_draw_circle(e->pos().x, e->pos().y, e->radius(), al_map_rgb(100, 100, 0), 0.5);
         }
     }
-
 
     ALLEGRO_TRANSFORM t;
     al_identity_transform(&t);
@@ -143,12 +129,15 @@ void World::draw() {
     font.set_size(1);
     font.set_line_width(1);
     font.set_align(Font::Align::LEFT);
+    font.set_color(al_map_rgb(200, 200, 200));
     font.printf({ 3, 3 }, "level:%d  lives:%d  score:%d", m_level_nr, m_player.lives(), m_player.score());
 
     if (m_level_done || m_player.lives() == 0) {
         font.set_size(3);
         font.set_line_width(2);
         font.set_align(Font::Align::CENTER);
+        int b = m_done_counter % 30 * (255.0 / 29.0);
+        font.set_color(al_map_rgb(b, b, b));
         if (m_level_done) font.printf({ WIDTH / 2, HEIGHT / 2 - 20 }, "level cleared");
         else              font.printf({ WIDTH / 2, HEIGHT / 2 - 20 }, "game over");
     }

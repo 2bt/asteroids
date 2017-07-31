@@ -21,7 +21,7 @@ public:
 
     void draw(const ALLEGRO_TRANSFORM& transform) override {
         al_use_transform(&transform);
-        al_draw_filled_circle(m_pos.x, m_pos.y, std::min(1.5, m_ttl * 0.1), al_map_rgb(170, 170, 170));
+        al_draw_filled_circle(m_pos.x, m_pos.y, std::min(1.5, m_ttl * 0.1), al_map_rgb(200, 200, 200));
     }
 
 private:

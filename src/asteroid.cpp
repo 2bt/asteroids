@@ -11,7 +11,6 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
     m_size   = size;
     m_health = m_size;
     m_ang    = world.random_float(0, 2 * ALLEGRO_PI);
-    m_vang   = world.random_float(-1, 1) * 0.01 * (4 - m_size);
 
     if (dir) m_vel = *dir;
     else     m_vel = { std::sin(m_ang), std::cos(m_ang) };
@@ -20,6 +19,7 @@ Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
     m_pos   += m_vel * r * 0.3f;
     float f  = std::pow(0.8, world.level_nr()) * 0.1 + 1;
     m_vel   *= world.random_float(0.25, 0.5) * (4 - m_size) * f;
+    m_vang   = world.random_float(-1, 1) * 0.01 * (4 - m_size) * f;
 
     // unique mesh
     m_vertices.emplace_back();
@@ -45,7 +45,7 @@ void Asteroid::collision(Entity& other) {
 //        return;
 //    }
 
-    m_hit_delay = 5;
+    m_hit_delay = 10;
     if (--m_health <= 0) {
         die();
 
@@ -73,7 +73,7 @@ void Asteroid::update() {
 
 
 void Asteroid::draw(const ALLEGRO_TRANSFORM& transform) {
-    int c = std::min(255, 170 + m_hit_delay * 15);
+    int c = std::min(255, std::min(255, 170 + m_hit_delay * 15));
     al_use_transform(&transform);
     al_draw_polygon((float*) &m_transformed_vertices[1], m_triangles.size(),
                     ALLEGRO_LINE_JOIN_ROUND, al_map_rgb(c, c, c), 1, 0);

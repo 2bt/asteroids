@@ -78,7 +78,7 @@ void Font::print(const glm::vec2& pos, const char* text) const {
                     p.y + get_nibble(d, 0) * m_size,
                 };
                 al_draw_polyline(vertices, 8, 2, 0, ALLEGRO_LINE_CAP_ROUND,
-                                 al_map_rgb(255, 255, 255), m_line_width, 0);
+                                 m_color, m_line_width, 0);
             }
         }
         p.x += 6 * m_size;
