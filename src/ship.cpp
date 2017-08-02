@@ -62,7 +62,7 @@ void Ship::update() {
     if (input.shoot && m_shoot_delay == 0) {
         m_shoot_delay = 13;
         world.spawn(std::make_unique<Bullet>(m_player, m_pos, m_ang));
-        audio.sound(0, m_pos.x / WIDTH);
+        audio.sound(ST_FIRE, m_pos.x / WIDTH);
     }
     if (m_shoot_delay > 0) --m_shoot_delay;
 }
@@ -72,6 +72,7 @@ void Ship::collision(Entity& other) {
     if (dynamic_cast<Asteroid*>(&other)) {
         m_player.set_ship(nullptr);
         die();
+        audio.sound(ST_SMALL_BANG, m_pos.x / WIDTH);
         world.spawn_explosion(m_pos, 20);
     }
 }

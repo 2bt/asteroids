@@ -4,6 +4,7 @@
 
 #include "bullet.hpp"
 #include "ship.hpp"
+#include "audio.hpp"
 
 
 Asteroid::Asteroid(const glm::vec2& pos, int size, const glm::vec2* dir) {
@@ -48,8 +49,12 @@ void Asteroid::collision(Entity& other) {
     m_hit_delay = 10;
     if (--m_health <= 0) {
         die();
+        audio.sound(SoundType(ST_SMALL_BANG + m_size - 1), m_pos.x / WIDTH);
 
-        int score = m_size == 3 ? 20 : m_size == 2 ? 50 : 100;
+        int score = m_size == 3 ? 20
+                  : m_size == 2 ? 50
+                                : 100;
+
         if (Bullet* b = dynamic_cast<Bullet*>(&other)) b->player().inc_score(score);
         if (Ship*   s = dynamic_cast<Ship*  >(&other)) s->player().inc_score(score);
 

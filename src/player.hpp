@@ -13,6 +13,7 @@ struct Input {
     bool  old_shoot;
 
     bool button_down() const { return shoot && !old_shoot; }
+    void clear() { shoot = old_shoot = false; }
 };
 
 

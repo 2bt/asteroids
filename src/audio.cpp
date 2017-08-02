@@ -3,14 +3,29 @@
 #include <cmath>
 
 
-void Audio::sound(int type, float panning) {
+void Audio::sound(SoundType type, float panning) {
 	Voice& v = m_voices[m_voice_index];
 	m_voice_index = (m_voice_index + 1) % m_voices.size();
 
 	v.state = Voice::ATTACK;
 	v.level = 0;
 	v.pan   = panning - 0.5;
-	v.len   = 1000;
+    v.type  = type;
+
+    if (type == ST_FIRE) {
+        v.wave  = 0;
+        v.len   = 9000;
+        v.decay = 0.9999;
+        v.pitch = 14;
+        v.sweep = -0.0015;
+    }
+    else {
+        v.wave  = 1;
+        v.len   = 80000;
+        v.decay = 0.99994;
+        v.pitch = 16 - type * 4;
+        v.sweep = 0;
+    }
 
 }
 
@@ -32,15 +47,25 @@ void Audio::mix_frame(float* frame) {
 			}
 			break;
 		case Voice::HOLD:
-			v.level *= 0.999;
+			v.level *= v.decay;
 			break;
 		default:
-			v.level *= 0.99;
+			v.level *= 0.999;
 		}
 
-		v.pos += (50.0 + v.len * 5) / MIX_RATE;
-		v.pos -= (int) v.pos;
-		float amp = v.pos * 2 - 1;
+        v.pitch += v.sweep;
+        float speed = std::exp2(v.pitch / 12) * 440 / MIX_RATE;
+        v.pos += speed;
+        v.pos -= (int) v.pos;
+
+		float amp;
+        if (v.wave == 0) amp = v.pos * 2 - 1;
+		else {
+            if (v.pos < speed) v.noise = rand() * 2.0 / RAND_MAX - 1;
+            amp = v.noise;
+        }
+
+
 		amp *= v.level * 0.3;
 
 		frame[0] += amp * std::sqrt(0.5 - v.pan);

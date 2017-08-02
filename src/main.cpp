@@ -95,7 +95,6 @@ int main(int argc, char** argv) {
             redraw = false;
             world.draw();
         }
-
     }
 
     al_destroy_audio_stream(stream);

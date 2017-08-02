@@ -3,9 +3,16 @@
 
 #include <array>
 
+enum SoundType {
+    ST_SMALL_BANG,
+    ST_MEDIUM_BANG,
+    ST_LARGE_BANG,
+    ST_FIRE,
+};
+
+
 class Audio {
 public:
-
     enum {
         MIX_RATE    = 48000,
         BUFFER_LEN  = 512,
@@ -13,19 +20,26 @@ public:
 
     void mix(float* buffer);
 
-    void sound(int type, float panning);
+
+    void sound(SoundType type, float panning);
 
 private:
     void mix_frame(float* frame);
 
     struct Voice {
         enum State { OFF, HOLD, ATTACK };
-        State state;
-        float pan;
-        float level;
-        float pos;
-        float pitch;
-        int   len;
+        float     decay;
+        float     pitch;
+        float     sweep;
+        int       wave;
+
+        SoundType type;
+        State     state;
+        float     pan;
+        float     level;
+        float     pos;
+        float     noise;
+        int       len;
     };
 
     std::array<Voice, 8> m_voices;
