@@ -8,6 +8,8 @@ enum SoundType {
     ST_MEDIUM_BANG,
     ST_LARGE_BANG,
     ST_FIRE,
+    ST_THRUST,
+    ST_HIT,
 };
 
 
@@ -28,6 +30,8 @@ private:
 
     struct Voice {
         enum State { OFF, HOLD, ATTACK };
+        enum Wave { SAW, NOISE };
+
         float     decay;
         float     pitch;
         float     sweep;

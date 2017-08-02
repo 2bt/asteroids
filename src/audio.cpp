@@ -12,19 +12,25 @@ void Audio::sound(SoundType type, float panning) {
 	v.pan   = panning - 0.5;
     v.type  = type;
 
-    if (type == ST_FIRE) {
-        v.wave  = 0;
+    switch (type) {
+    case ST_FIRE:
+        v.wave  = Voice::SAW;
         v.len   = 9000;
         v.decay = 0.9999;
         v.pitch = 14;
         v.sweep = -0.0015;
-    }
-    else {
-        v.wave  = 1;
+        break;
+    case ST_SMALL_BANG:
+    case ST_MEDIUM_BANG:
+    case ST_LARGE_BANG:
+        v.wave  = Voice::NOISE;
         v.len   = 80000;
         v.decay = 0.99994;
         v.pitch = 16 - type * 4;
         v.sweep = 0;
+        break;
+    default:
+        break;
     }
 
 }
@@ -59,8 +65,8 @@ void Audio::mix_frame(float* frame) {
         v.pos -= (int) v.pos;
 
 		float amp;
-        if (v.wave == 0) amp = v.pos * 2 - 1;
-		else {
+        if      (v.wave == Voice::SAW) amp = v.pos * 2 - 1;
+		else if (v.wave == Voice::NOISE) {
             if (v.pos < speed) v.noise = rand() * 2.0 / RAND_MAX - 1;
             amp = v.noise;
         }
