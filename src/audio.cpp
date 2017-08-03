@@ -3,12 +3,12 @@
 #include <cmath>
 
 
-void Audio::sound(SoundType type, float panning) {
+void Audio::sound(SoundType type, float x) {
     Voice& v = m_voices[m_voice_index];
     m_voice_index = (m_voice_index + 1) % m_voices.size();
     v.state = Voice::ATTACK;
     v.level = 0;
-    v.pan   = panning - 0.5;
+    v.pan   = x / WIDTH - 0.5;
     switch (type) {
     case ST_FIRE:
         v.wave  = Voice::SAW;
@@ -35,6 +35,14 @@ void Audio::sound(SoundType type, float panning) {
         v.pitch = -30;
         v.sweep = 0.0005;
         v.vol   = 0.5;
+        break;
+    case ST_HIT:
+        v.wave  = Voice::NOISE;
+        v.len   = 4000;
+        v.decay = 0.9994;
+        v.pitch = 10 + rand() % 5;
+        v.sweep = -0.002;
+        v.vol   = 0.3;
         break;
     default:
         break;

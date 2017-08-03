@@ -49,7 +49,7 @@ void Asteroid::collision(Entity& other) {
     m_hit_delay = 10;
     if (--m_health <= 0) {
         die();
-        audio.sound(SoundType(ST_SMALL_BANG + m_size - 1), m_pos.x / WIDTH);
+        audio.sound(SoundType(ST_SMALL_BANG + m_size - 1), m_pos.x);
 
         int score = m_size == 3 ? 20
                   : m_size == 2 ? 50

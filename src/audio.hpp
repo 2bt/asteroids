@@ -1,6 +1,7 @@
 // vim: ts=4 sw=4 sts=4 et
 #pragma once
 
+#include "entity.hpp"
 #include <array>
 
 enum SoundType {
@@ -20,7 +21,7 @@ public:
         BUFFER_LEN  = 512,
     };
 
-    void sound(SoundType type, float panning);
+    void sound(SoundType type, float x = WIDTH / 2);
     void mix(float* buffer);
 
 private:

@@ -1,5 +1,6 @@
 // vim: ts=4 sw=4 sts=4 et
 #include "bullet.hpp"
+#include "audio.hpp"
 
 
 Bullet::Bullet(Player& player, const glm::vec2& pos, float ang)
@@ -26,6 +27,7 @@ void Bullet::update() {
 
 
 void Bullet::collision(Entity& other) {
+    audio.sound(ST_HIT, m_pos.x);
 	die();
 }
 
