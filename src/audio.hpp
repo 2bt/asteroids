@@ -20,10 +20,8 @@ public:
         BUFFER_LEN  = 512,
     };
 
-    void mix(float* buffer);
-
-
     void sound(SoundType type, float panning);
+    void mix(float* buffer);
 
 private:
     void mix_frame(float* frame);
@@ -38,7 +36,6 @@ private:
         float     vol;
         int       wave;
 
-        SoundType type;
         State     state;
         float     pan;
         float     level;
@@ -48,7 +45,7 @@ private:
     };
 
     std::array<Voice, 8> m_voices;
-    int                  m_voice_index;
+    int                  m_voice_index = 0;
 };
 
 extern Audio audio;
