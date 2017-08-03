@@ -42,6 +42,7 @@ void Ship::update() {
     if (input.dy > 0.33) {
         m_vel.x -= std::sin(m_ang) * 0.05f;
         m_vel.y += std::cos(m_ang) * 0.05f;
+        if (m_thrust_counter % 10 == 0) audio.sound(ST_THRUST, m_pos.x / WIDTH);
         ++m_thrust_counter;
     }
     else {

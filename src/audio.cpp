@@ -19,6 +19,8 @@ void Audio::sound(SoundType type, float panning) {
         v.decay = 0.9999;
         v.pitch = 14;
         v.sweep = -0.0015;
+        v.vol   = 0.5;
+
         break;
     case ST_SMALL_BANG:
     case ST_MEDIUM_BANG:
@@ -26,8 +28,17 @@ void Audio::sound(SoundType type, float panning) {
         v.wave  = Voice::NOISE;
         v.len   = 80000;
         v.decay = 0.99994;
-        v.pitch = 16 - type * 4;
+        v.pitch = 16 - (type - ST_SMALL_BANG) * 4;
         v.sweep = 0;
+        v.vol   = 1;
+        break;
+    case ST_THRUST:
+        v.wave  = Voice::TRI;
+        v.len   = 3000;
+        v.decay = 0.9999;
+        v.pitch = -30;
+        v.sweep = 0.0005;
+        v.vol   = 0.2;
         break;
     default:
         break;
@@ -66,14 +77,14 @@ void Audio::mix_frame(float* frame) {
 
 		float amp;
         if      (v.wave == Voice::SAW) amp = v.pos * 2 - 1;
+        if      (v.wave == Voice::TRI) amp = v.pos < 0.5 ? 4 * v.pos - 1 : 3 - 4 * v.pos;
 		else if (v.wave == Voice::NOISE) {
             if (v.pos < speed) v.noise = rand() * 2.0 / RAND_MAX - 1;
             amp = v.noise;
         }
 
 
-		amp *= v.level * 0.3;
-
+		amp *= v.level * v.vol * 0.5;
 		frame[0] += amp * std::sqrt(0.5 - v.pan);
 		frame[1] += amp * std::sqrt(0.5 + v.pan);
 //		frame[0] += amp;

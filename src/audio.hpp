@@ -30,11 +30,12 @@ private:
 
     struct Voice {
         enum State { OFF, HOLD, ATTACK };
-        enum Wave { SAW, NOISE };
+        enum Wave { SAW, TRI, NOISE };
 
         float     decay;
         float     pitch;
         float     sweep;
+        float     vol;
         int       wave;
 
         SoundType type;
