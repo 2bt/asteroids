@@ -37,7 +37,7 @@ void Audio::sound(SoundType type, float panning) {
         v.decay = 0.9999;
         v.pitch = -30;
         v.sweep = 0.0005;
-        v.vol   = 0.2;
+        v.vol   = 0.5;
         break;
     default:
         break;
