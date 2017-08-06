@@ -24,7 +24,7 @@ void Audio::sound(SoundType type, float x) {
         v.wave  = Voice::NOISE;
         v.len   = 80000;
         v.decay = 0.99994;
-        v.pitch = 16 - (type - ST_SMALL_BANG) * 4;
+        v.pitch = 15 - (type - ST_SMALL_BANG) * 4 + rand() / (float) RAND_MAX * 2;
         v.sweep = 0;
         v.vol   = 1;
         break;

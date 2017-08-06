@@ -3,16 +3,20 @@
 #include "ship.hpp"
 #include "world.hpp"
 
-void Player::init() {
-    world.spawn(std::make_unique<Ship>(*this, false));
 
+Player::Player() {
+    m_score = 0;
+    m_lives = 3;
+}
+
+
+void Player::init() {
     m_joystick = nullptr;
     if (al_get_num_joysticks() > 0) {
         m_joystick = al_get_joystick(0);
     }
 
-    m_score = 0;
-    m_lives = 3;
+    world.spawn(std::make_unique<Ship>(*this, false));
 }
 
 void Player::update() {

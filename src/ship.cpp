@@ -38,7 +38,7 @@ void Ship::update() {
     const Input& input = m_player.input();
 
     // movement
-    m_ang += input.dx * 0.075;
+    m_ang += input.dx * 0.06;
     if (input.dy > 0.33) {
         m_vel.x -= std::sin(m_ang) * 0.05f;
         m_vel.y += std::cos(m_ang) * 0.05f;

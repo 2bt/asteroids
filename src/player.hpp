@@ -19,6 +19,7 @@ struct Input {
 
 class Player {
 public:
+    Player();
     void init();
     void update();
     const Input& input() const { return m_input; }
