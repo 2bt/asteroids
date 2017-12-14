@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
     al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
     al_set_new_display_option(ALLEGRO_SAMPLES, 4, ALLEGRO_SUGGEST);
-    ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
+    ALLEGRO_DISPLAY* display = al_create_display(WIDTH * 2, HEIGHT * 2);
     al_hide_mouse_cursor(display);
 
     resize(al_get_display_width(display), al_get_display_height(display));

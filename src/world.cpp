@@ -57,7 +57,7 @@ void World::update() {
         init();
     }
 
-    m_player.update();
+    m_player.update(m_level_done);
 
     // update entities
     m_level_done = true;

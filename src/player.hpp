@@ -10,10 +10,10 @@ struct Input {
     float dx;
     float dy;
     bool  shoot;
-    bool  old_shoot;
+    bool  button;
+    bool  old_button;
 
-    bool button_down() const { return shoot && !old_shoot; }
-    void clear() { shoot = old_shoot = false; }
+    bool button_down() const { return button && !old_button; }
 };
 
 
@@ -21,7 +21,7 @@ class Player {
 public:
     Player();
     void init();
-    void update();
+    void update(bool level_done);
     const Input& input() const { return m_input; }
     void set_ship(Ship* ship) {
         m_ship = ship;
