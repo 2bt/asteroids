@@ -19,7 +19,6 @@ struct Input {
 
 class Player {
 public:
-    Player();
     void init();
     void update(bool level_done);
     const Input& input() const { return m_input; }

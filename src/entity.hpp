@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/norm.hpp>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -52,10 +53,10 @@ public:
 
 
 protected:
-    glm::vec2 m_pos;
-    float     m_ang;
+    glm::vec2 m_pos = {};
+    float     m_ang = 0;
 
-    glm::vec2 m_vel;
+    glm::vec2 m_vel = {};
 
 
     // collision stuff

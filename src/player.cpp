@@ -4,12 +4,6 @@
 #include "world.hpp"
 
 
-Player::Player() {
-    m_score = 0;
-    m_lives = 3;
-}
-
-
 void Player::init() {
     m_joystick = nullptr;
     if (al_get_num_joysticks() > 0) {
@@ -17,6 +11,9 @@ void Player::init() {
     }
 
     world.spawn(std::make_unique<Ship>(*this, false));
+
+    m_score = 0;
+    m_lives = 3;
 }
 
 void Player::update(bool level_done) {
